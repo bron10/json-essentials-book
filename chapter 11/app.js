@@ -6,27 +6,54 @@ const server = require('http').createServer((req, res)=>{
 const io = require('socket.io')(server);
 
 let pinBoard = [];
+
+/**
+ * kafka implementation
+ */
+const kafka = require('kafka-node'),
+    Consumer = kafka.Consumer,
+    client = new kafka.Client(),
+    consumer = new Consumer(client,
+        [{ topic: 'pinBoard', offset: 0}],
+        {
+            autoCommit: false
+        }
+    );
+
+consumer.on('message', function (message) {
+    console.log("consumer message-->", (message));
+    if(typeof message.value=='string'){
+    	console.log("atminne ala");
+    	const pinData = JSON.parse(message.value);
+    	console.log("pinData", pinData);
+    	pinBoard.push(pinData);
+    	console.log("pinBoard", pinBoard);
+		io.emit('append-to-list', pinData)
+    }else
+    	throw message.value;
+  
+});
+
+consumer.on('error', function (err) {
+    console.log('Error:',err);
+})
+
+
+/**
+ * Socket.io implementation
+ */
 io.on('connection', (client)=>{
 	console.log("connected to realtime data server");
+	io.emit('pin-list', pinBoard)
 	client.on('disconnect', ()=>{
 		console.log("A user is disconnected!");
 	})
 	client.on('new-pin', (pinData)=>{
 		pinBoard.push(pinData);
+		console.log("pinData", pinData);
 		io.emit('append-to-list', pinData)
 	})
 });
 server.listen(3400);
 
-// http.createServer((req, res) => {
 
-// 	if(req.url == '/html'){
-// 		res.setHeader('content-type', 'text/html');
-// 		const templateData = handlebar.compile(template)({
-// 			"audience" : "Readers",
-// 			"adjective": "simple"
-// 		})
-// 		res.end(templateData);
-// 	}else
-//     	res.end(`Hello ${constants.audience}`);
-// }).listen(port);

@@ -47,12 +47,6 @@ button{
 <body>
 	<input type="text" id="writtenBy" placeholder="name"/><textarea id="textData" autocomplete="off" placeholder="put your thoughts!"></textarea><button id="postButton">Post</button>
 	<div class="collection">
-		<div class="card">
-		  <div class="container">
-		  	<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> 
-		    <h4><b>John Doe</b></h4>    
-		  </div>
-		</div>
 	</div>
 </body>
   	<script
@@ -75,6 +69,19 @@ button{
 			})
 			socket.on('append-to-list', function(data){
 				$('.collection').append('<div class="card"><div class="container"><p>'+data.story+'</p><h4><b>'+data.writtenBy+'</b></h4></div></div>')
+			})
+			/**
+			 * Pin-list get all the pins on load
+			 */
+			socket.on('pin-list', function(list){
+				console.log("list", list);
+				if(list.length){
+					list.forEach(function(data){
+						$('.collection').append('<div class="card"><div class="container"><p>'+data.story+'</p><h4><b>'+data.writtenBy+'</b></h4></div></div>')
+					})
+				}else{
+					$('.collection').append('<div class="container"><p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the  standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p><h4><b>John Doe</b></h4></div>')
+				}
 			})
 		})
 	</script>
