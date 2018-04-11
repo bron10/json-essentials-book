@@ -8,7 +8,16 @@
 		$(document).ready(()=>{
 			let htmlContent = ``;
 			$.getJSON('http://localhost:3300', (data)=>{
-				console.log("data", data);
+				/**
+		        $.each(data, (key, value) => {
+		            $.each(value, (index, student) => {
+		                htmlContent += `<div class="student">`;
+		                htmlContent += `<h3>${student.level} of the Month</h3>`;
+		                htmlContent += `<h4>${student.firstname} ${student.lastname}</h4>`;
+		                htmlContent += `<p>${student.class}</p>`;
+		                htmlContent += `</div>`;
+		            });
+		        });**/
 				$.each(data, (index, student)=>{
 					htmlContent+=`<div class="student">
 						<div class="col-lg-12 text-center">

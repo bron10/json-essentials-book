@@ -5,15 +5,16 @@
 		<script type="text/javascript" src="data.js"></script>
 		<script type="text/javascript">
 			const employeeCount = data_json.length;
+			//console.log("data_json", data_json);
 			for(let i=0;i<employeeCount;i++){
 				console.log("Employee number is ", data_json[i].emp_no);
 				console.log(`Employee's full Name is ${data_json[i].first_name} ${data_json[i].last_name}`);
-				if(data_json[i].designation instanceof Array){
+				if(data_json[i].designation.title instanceof Array){
 					const designationCount = data_json[i].designation.title.length;
-
+					console.log("data_json", data_json[i].designation.title);
 					let designations = "";
-					for(let i=0;i<designationCount;i++){
-						designations+= data_json[i].designation.title[i];
+					for(let j=0;j<designationCount;j++){
+						designations+= `, ${data_json[i].designation.title[j]}`;
 					}
 
 					console.log(`Employee ${data_json[i].emp_no} has served as ${designations}`)

@@ -15,10 +15,10 @@ kafkaClient.once('connect', function () {
       if(listofTopics.indexOf('pinBoard')==-1){
 		producer.createTopics(['pinBoard'], (err, data)=>{
 			console.log("New 'pinBoard' Topic created", err, data);
-			//sendMessage();      	
+			sendMessage();      	
 		});      	
       }else{
-		//sendMessage()      	
+		sendMessage()      	
       }
     });
 });
@@ -27,6 +27,7 @@ kafkaClient.once('connect', function () {
 
 function sendMessage(){
 	let count = -1;
+	console.log("Producer will send message at every interval of 1 min\n Waiting for 1 min...");
 	setInterval(()=>{
 		count = count==9 ? count = 0 : ++count;
 		/**
@@ -40,7 +41,11 @@ function sendMessage(){
 		}], (err, data)=>{
 			console.log("Message send by producer", err, data);
 		})
-	}, 1000)
-	//120000
+	}, 60000)
 		
 }
+
+producer.on('error', function (err) {
+    console.log('Producer is in error state');
+    console.log(err);
+})
