@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "handlebars": "^4.0.11",
-    "hapi": "^17.2.0",
+    "hapi": "^17.3.1",
     "mongodb": "^3.0.2",
     "mongoose": "^5.0.3"
   }
